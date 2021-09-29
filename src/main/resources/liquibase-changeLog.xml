@@ -18,4 +18,38 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet  author="Julia"  id="29/09/1">
+        <createTable tableName="kpis">
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="kpi" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="integer">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet  author="Julia"  id="29/09/2">
+        <createTable tableName="totals">
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="salary" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="kpi" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="integer">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

@@ -16,12 +16,12 @@ public class SalaryServiceImpl implements SalaryService{
     private final SalaryRepository salaryRepository;
 
     @Override
-    public List<Salary> findAll() {
+    public List<Salary> findAllSalaries() {
         return salaryRepository.findAll();
     }
 
     @Override
-    public void fillTableFromCsv(String fileName) throws FileNotFoundException {
+    public void fillTableSalaryFromCsv(String fileName) throws FileNotFoundException {
             FileReader fileReader = new FileReader(fileName);
             List<Salary> result = new CsvToBeanBuilder(fileReader).
                     withType(Salary.class).
