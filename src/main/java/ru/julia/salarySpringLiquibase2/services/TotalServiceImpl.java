@@ -3,6 +3,7 @@ package ru.julia.salarySpringLiquibase2.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.julia.salarySpringLiquibase2.dto.SalaryAndKPI;
+import ru.julia.salarySpringLiquibase2.dto.TotalComparator;
 import ru.julia.salarySpringLiquibase2.entities.KPI;
 import ru.julia.salarySpringLiquibase2.entities.Salary;
 import ru.julia.salarySpringLiquibase2.entities.Total;
@@ -12,14 +13,11 @@ import ru.julia.salarySpringLiquibase2.repositories.TotalRepository;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class TotalServiceImpl implements TotalService{
+public class TotalServiceImpl implements TotalService {
     private final TotalRepository totalRepository;
     private final SalaryRepository salaryRepository;
     private final KPIRepository kpiRepository;
@@ -72,7 +70,22 @@ public class TotalServiceImpl implements TotalService{
 
             totalRepository.save(total);
         }
+    }
 
+    @Override
+    public List<Total> sortAsc() {
+        List<Total> totals = totalRepository.findAll();
+        Comparator totalComparator = new TotalComparator();
+        Collections.sort(totals, totalComparator);
+        return totals;
+    }
 
+    @Override
+    public Integer totalSum() {
+        List<Total> totals = totalRepository.findAll();
+        Integer sum = 0;
+        for (Total total : totals) {
+            sum = sum + total.getTotal();
+        }
     }
 }

@@ -9,4 +9,6 @@ import java.util.List;
 public interface TotalService {
     public List<Total> findAllTotals();
     public void getTotalCsvAndFillTable(String fileName) throws FileNotFoundException;
+    public List<Total> sortAsc();
+    public Integer totalSum();
 }
