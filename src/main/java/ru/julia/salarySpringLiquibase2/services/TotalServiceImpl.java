@@ -87,5 +87,6 @@ public class TotalServiceImpl implements TotalService {
         for (Total total : totals) {
             sum = sum + total.getTotal();
         }
+        return sum;
     }
 }
