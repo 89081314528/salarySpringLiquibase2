@@ -7,34 +7,43 @@
 
     <changeSet  author="Julia"  id="27/09/1">
         <createTable tableName="salaries3">
+            <column name="salary_id" type="integer">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="salary" type="integer">
                 <constraints nullable="false"/>
             </column>
-            <column name="id" type="integer">
-                <constraints primaryKey="true" nullable="false"/>
+            <column name="department_id" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="position" type="varchar(255)">
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
 
     <changeSet  author="Julia"  id="29/09/1">
         <createTable tableName="kpis">
+            <column name="kpi_id" type="integer">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="kpi" type="integer">
                 <constraints nullable="false"/>
             </column>
-            <column name="id" type="integer">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
         </createTable>
     </changeSet>
 
     <changeSet  author="Julia"  id="29/09/2">
         <createTable tableName="totals">
+            <column name="total_id" type="integer">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
@@ -47,9 +56,31 @@
             <column name="total" type="integer">
                 <constraints nullable="false"/>
             </column>
-            <column name="id" type="integer">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
         </createTable>
     </changeSet>
+
+    <changeSet  author="Julia"  id="05/10/1">
+        <createTable tableName="departments2">
+            <column name="department_id" type="integer">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="department" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <insert tableName="departments2">
+            <column name="department_id">1</column>
+            <column name="department">It</column>
+        </insert>
+        <insert tableName="departments2">
+            <column name="department_id">2</column>
+            <column name="department">Sales</column>
+        </insert>
+        <insert tableName="departments2">
+            <column name="department_id">3</column>
+            <column name="department">Call center</column>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

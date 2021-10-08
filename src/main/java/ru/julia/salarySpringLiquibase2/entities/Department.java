@@ -9,20 +9,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "kpis")
+@Table(name = "departments2")
 @Data
-public class KPI {
-    @Column(name = "name")
-    @CsvBindByName(column = "name")
-    private String name;
-    @Column(name = "kpi")
-    @CsvBindByName(column = "kpi")
-    private Integer kpi;
-    @CsvBindByName(column = "id")
-    @Column(name = "id")
+public class Department {
+    @Column(name = "department_id")
     @Id
     private Integer id;
+    @Column(name = "department")
+    private String department;
 
-    public KPI() {
+    public Department(){
     }
 }

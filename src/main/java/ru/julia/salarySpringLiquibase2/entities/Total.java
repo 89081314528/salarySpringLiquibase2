@@ -12,6 +12,10 @@ import javax.persistence.Table;
 @Table(name = "totals")
 @Data
 public class Total {
+    @Column(name = "total_id")
+    @CsvBindByName(column = "total_id")
+    @Id
+    private Integer totalId;
     @Column(name = "name")
     @CsvBindByName(column = "name")
     private String name;
@@ -24,20 +28,16 @@ public class Total {
     @Column(name = "total")
     @CsvBindByName(column = "total")
     private Integer total;
-    @Column(name = "id")
-    @CsvBindByName(column = "id")
-    @Id
-    private Integer id;
 
-    public Total() {
-    }
-
-
-    public Total(String name, Integer salary, Integer kpi, Integer total, Integer id) {
+    public Total(Integer totalId, String name, Integer salary, Integer kpi, Integer total) {
+        this.totalId = totalId;
         this.name = name;
         this.salary = salary;
         this.kpi = kpi;
         this.total = total;
-        this.id = id;
     }
+
+    public Total() {
+    }
+
 }

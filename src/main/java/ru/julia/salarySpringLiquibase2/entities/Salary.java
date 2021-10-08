@@ -13,16 +13,25 @@ import java.util.UUID;
 @Table(name = "salaries3")
 @Data
 public class Salary {
+    @Column(name = "salary_id")
+    @Id
+    private Integer salaryId;
     @Column(name = "name")
-    @CsvBindByName(column = "name")
     private String name;
     @Column(name = "salary")
-    @CsvBindByName(column = "salary")
     private Integer salary;
-    @CsvBindByName(column = "id")
-    @Column(name = "id")
-    @Id
-    private Integer id;
+    @Column(name = "department_id")
+    private Integer departmentId;
+    @Column(name = "position")
+    private String position;
+
+    public Salary(Integer salaryId, String name, Integer salary, Integer departmentId, String position) {
+        this.salaryId = salaryId;
+        this.name = name;
+        this.salary = salary;
+        this.departmentId = departmentId;
+        this.position = position;
+    }
 
     public Salary() {
     }
