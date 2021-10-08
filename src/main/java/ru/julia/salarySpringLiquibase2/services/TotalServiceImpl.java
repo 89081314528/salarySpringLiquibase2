@@ -31,37 +31,39 @@ public class TotalServiceImpl implements TotalService {
     }
 
     @Override
-    public void makeTotalCsvAndFillTable(String fileName) throws FileNotFoundException {
+    public void makeTotalCsvAndFillTable(String fileName) throws FileNotFoundException { //
+        // разделить на 3 метода - строит тоталы, принимает тоталы входным параметром и записывает из них сиэсви,
+        // вызывает 2 предыдущих метода и заполняет базу данных
         List<Salary> salaries = salaryRepository.findAll();
         List<Kpi> kpis = kpiRepository.findAll();
         List<Total> totals = new ArrayList<>();
         Map<Integer, SalaryAndKPI> map = new HashMap<>();
         for (int i = 0; i < salaries.size(); i++) {
-            Integer key = salaries.get(i).getSalaryId();
             Salary currentSalary = salaries.get(i);
+            Integer salaryId = currentSalary.getSalaryId();
             SalaryAndKPI salaryAndKPI = new SalaryAndKPI(currentSalary, null);
-            map.put(key, salaryAndKPI);
+            map.put(salaryId, salaryAndKPI);
         }
 
         for (int i = 0; i < kpis.size(); i++) {
-            Integer key = kpis.get(i).getKpiId();
             Kpi kpi = kpis.get(i);
-            Salary salary = map.get(key).getSalary();
+            Integer kpiId = kpi.getKpiId();
+            Salary salary = map.get(kpiId).getSalary();
             SalaryAndKPI salaryAndKPI = new SalaryAndKPI(salary, kpi);
-            map.put(key, salaryAndKPI);
+            map.put(kpiId, salaryAndKPI);
         }
 
         PrintStream csv = new PrintStream(fileName);
         csv.println(
                 "total_id" + "name" + ";" + "salary" + ";" + "kpi" + ";" + "total"
         );
-        for (SalaryAndKPI value : map.values()) {
-            Integer sum = value.getSalary().getSalary() + value.getKpi().getKpi();
+        for (SalaryAndKPI salaryAndKPI : map.values()) {
+            Integer sum = salaryAndKPI.getSalary().getSalary() + salaryAndKPI.getKpi().getKpi();
             Total total = new Total(
-                    value.getSalary().getSalaryId(),
-                    value.getSalary().getName(),
-                    value.getSalary().getSalary(),
-                    value.getKpi().getKpi(),
+                    salaryAndKPI.getSalary().getSalaryId(),
+                    salaryAndKPI.getSalary().getName(),
+                    salaryAndKPI.getSalary().getSalary(),
+                    salaryAndKPI.getKpi().getKpi(),
                     sum);
             totals.add(total);
 
@@ -97,10 +99,15 @@ public class TotalServiceImpl implements TotalService {
     @Override
     public List<Map.Entry<String, Integer>> getDepartmentCostsAcs() {
         List<Total> totals = totalRepository.findAll();
-        Map<String, Integer> map = new TreeMap<>(); // ??? отсортирует по ключу
+        Map<String, Integer> map = new TreeMap<>();
+        // собрать все айди тотала в лист
+        //salaryRepository.findAllById() сюда передаю лист с айди и будут за один раз найдены все салэри с таким айди
+        // собираю все департайди в лист, чтобы получить все департементы из departmentReposotory
+        //сделать еще 2 мапы (ключ тотал айди, департамент) и (ключ департмент айди ди значение департамент)
         for (Total total : totals) {
             Integer departmentId = salaryRepository.findById(total.getTotalId()).orElseThrow().getDepartmentId();
-            String key = departmentRepository.findById(departmentId).orElseThrow().getDepartment();
+            String key = departmentRepository.findById(departmentId).orElseThrow().getDepartment(); // key название департамента
+            // заменить верхние строки на поиск по мапе
             Integer value = total.getTotal();
             if (map.containsKey(key)) {
                 map.put(key, map.get(key) + value);
@@ -108,8 +115,7 @@ public class TotalServiceImpl implements TotalService {
                 map.put(key, value);
             }
         }
-        List<Map.Entry<String, Integer>> list = new ArrayList(map.entrySet()); // ??? это чтобы отсортировать
-        // по значению, разумно ли так делать?
+        List<Map.Entry<String, Integer>> list = new ArrayList(map.entrySet());
         Comparator<Map.Entry<String, Integer>> mapValueComparator = new MapValueComparator();
         list.sort(mapValueComparator);
         return list;
@@ -118,7 +124,9 @@ public class TotalServiceImpl implements TotalService {
     @Override
     public Map<String, Integer> getDepartmentWithMaxCosts() {
         List<Map.Entry<String, Integer>> list = getDepartmentCostsAcs();
-        Map<String, Integer> mapMax = new TreeMap<>();
+        Map<String, Integer> mapMax = new TreeMap<>(); // вместо мапы создать новый класс с нужными полями
+        // в предыдущем методе тоже переделать
+        // могу взять первый и последний элемент отсортированного листа, чтобы получить мин и мах
         Integer max = 0;
         String keyMax = "";
         for (Map.Entry<String, Integer> entry : list) {

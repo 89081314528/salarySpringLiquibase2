@@ -17,6 +17,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\kpi1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\salary.csv">
           <value>
             <Attribute>
