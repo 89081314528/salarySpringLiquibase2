@@ -10,13 +10,16 @@ import javax.persistence.Id;
 public class KpiDto {
     @CsvBindByName(column = "kpi_id")
     private Integer kpiId;
+    @CsvBindByName(column = "salary_id")
+    private Integer salaryId;
     @CsvBindByName(column = "name")
     private String name;
     @CsvBindByName(column = "kpi")
     private Integer kpi;
 
-    public KpiDto(Integer kpiId, String name, Integer kpi) {
+    public KpiDto(Integer kpiId, Integer salaryId, String name, Integer kpi) {
         this.kpiId = kpiId;
+        this.salaryId = salaryId;
         this.name = name;
         this.kpi = kpi;
     }

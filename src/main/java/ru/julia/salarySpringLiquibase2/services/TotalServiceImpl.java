@@ -55,12 +55,13 @@ public class TotalServiceImpl implements TotalService {
 
         PrintStream csv = new PrintStream(fileName);
         csv.println(
-                "total_id" + ";" + "name" + ";" + "salary" + ";" + "kpi" + ";" + "total"
+                "total_id" + ";" + "salary_id" + ";" + "name" + ";" + "salary" + ";" + "kpi" + ";" + "total"
         );
         for (SalaryAndKPI salaryAndKPI : map.values()) {
             Integer sum = salaryAndKPI.getSalary().getSalary() + salaryAndKPI.getKpi().getKpi();
             Total total = new Total(
-                    salaryAndKPI.getSalary().getSalaryId(),
+                    salaryAndKPI.getSalary().getSalaryId(), //айди total такой же как айди salary.??? как сделать
+                    salaryAndKPI.getSalary().getSalaryId(), // произвольный
                     salaryAndKPI.getSalary().getName(),
                     salaryAndKPI.getSalary().getSalary(),
                     salaryAndKPI.getKpi().getKpi(),
@@ -69,6 +70,7 @@ public class TotalServiceImpl implements TotalService {
 
             csv.println(
                     total.getTotalId() + ";" +
+                            total.getSalaryId() + ";" +
                             total.getName() + ";" +
                             total.getSalary() + ";" +
                             total.getKpi() + ";" +

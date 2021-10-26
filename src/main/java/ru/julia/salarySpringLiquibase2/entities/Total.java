@@ -16,6 +16,9 @@ public class Total {
     @CsvBindByName(column = "total_id")
     @Id
     private Integer totalId;
+    @Column(name = "salary_id")
+    @CsvBindByName(column = "salary_id")
+    private Integer salaryId;
     @Column(name = "name")
     @CsvBindByName(column = "name")
     private String name;
@@ -29,8 +32,9 @@ public class Total {
     @CsvBindByName(column = "total")
     private Integer total;
 
-    public Total(Integer totalId, String name, Integer salary, Integer kpi, Integer total) {
+    public Total(Integer totalId, Integer salaryId, String name, Integer salary, Integer kpi, Integer total) {
         this.totalId = totalId;
+        this.salaryId = salaryId;
         this.name = name;
         this.salary = salary;
         this.kpi = kpi;

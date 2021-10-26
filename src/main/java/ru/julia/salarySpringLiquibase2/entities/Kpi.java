@@ -12,19 +12,19 @@ import javax.persistence.Table;
 @Table(name = "kpis")
 @Data
 public class Kpi {
-    @CsvBindByName(column = "kpi_id")
     @Column(name = "kpi_id")
     @Id
     private Integer kpiId;
+    @Column(name = "salary_id")
+    private Integer salaryId;
     @Column(name = "name")
-    @CsvBindByName(column = "name")
     private String name;
     @Column(name = "kpi")
-    @CsvBindByName(column = "kpi")
     private Integer kpi;
 
-    public Kpi(Integer kpiId, String name, Integer kpi) {
+    public Kpi(Integer kpiId, Integer salaryId, String name, Integer kpi) {
         this.kpiId = kpiId;
+        this.salaryId = salaryId;
         this.name = name;
         this.kpi = kpi;
     }

@@ -31,7 +31,7 @@ public class KpiServiceImpl implements KpiService {
                 build().parse();
         List<Kpi> result = new ArrayList<>();
         for (KpiDto kpiDto : resultDto) {
-            result.add(new Kpi(kpiDto.getKpiId(), kpiDto.getName(), kpiDto.getKpi()));
+            result.add(new Kpi(kpiDto.getKpiId(), kpiDto.getSalaryId(), kpiDto.getName(), kpiDto.getKpi()));
         }
             kpiRepository.saveAll(result);
     }

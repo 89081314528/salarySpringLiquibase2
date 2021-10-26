@@ -32,7 +32,7 @@ public class SalaryServiceImpl implements SalaryService{
             List<Salary> result = new ArrayList<>();
         for (SalaryDto salaryDto : resultDto) {
             result.add(new Salary(salaryDto.getSalaryId(), salaryDto.getName(), salaryDto.getSalary(),
-                    salaryDto.getDepartmentId(), salaryDto.getPosition()));
+                    salaryDto.getMonth(), salaryDto.getDepartmentId(), salaryDto.getPosition()));
         }
                 salaryRepository.saveAll(result);
         }

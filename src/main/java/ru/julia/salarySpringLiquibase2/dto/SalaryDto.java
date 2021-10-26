@@ -3,9 +3,6 @@ package ru.julia.salarySpringLiquibase2.dto;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-
 @Data
 public class SalaryDto {
     @CsvBindByName(column = "salary_id") //в csv файле указываем название колонки salary_id, а не поля salaryId
@@ -14,15 +11,18 @@ public class SalaryDto {
     private String name;
     @CsvBindByName(column = "salary")
     private Integer salary;
+    @CsvBindByName(column = "month")
+    private Integer month;
     @CsvBindByName(column = "department_id")
     private Integer departmentId;
     @CsvBindByName(column = "position")
     private String position;
 
-    public SalaryDto(Integer salaryId, String name, Integer salary, Integer departmentId, String position) {
+    public SalaryDto(Integer salaryId, String name, Integer salary, Integer month, Integer departmentId, String position) {
         this.salaryId = salaryId;
         this.name = name;
         this.salary = salary;
+        this.month = month;
         this.departmentId = departmentId;
         this.position = position;
     }

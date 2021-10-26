@@ -20,15 +20,18 @@ public class Salary {
     private String name;
     @Column(name = "salary")
     private Integer salary;
+    @Column(name = "month")
+    private Integer month;
     @Column(name = "department_id")
     private Integer departmentId;
     @Column(name = "position")
     private String position;
 
-    public Salary(Integer salaryId, String name, Integer salary, Integer departmentId, String position) {
+    public Salary(Integer salaryId, String name, Integer salary, Integer month, Integer departmentId, String position) {
         this.salaryId = salaryId;
         this.name = name;
         this.salary = salary;
+        this.month = month;
         this.departmentId = departmentId;
         this.position = position;
     }

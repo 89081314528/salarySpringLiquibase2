@@ -16,6 +16,9 @@
             <column name="salary" type="integer">
                 <constraints nullable="false"/>
             </column>
+            <column name="month" type="integer">
+                <constraints nullable="false"/>
+            </column>
             <column name="department_id" type="integer">
                 <constraints nullable="false"/>
             </column>
@@ -30,6 +33,9 @@
             <column name="kpi_id" type="integer">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="salary_id" type="integer">
+                <constraints nullable="false"/>
+            </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
@@ -43,6 +49,9 @@
         <createTable tableName="totals">
             <column name="total_id" type="integer">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="salary_id" type="integer">
+                <constraints nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
