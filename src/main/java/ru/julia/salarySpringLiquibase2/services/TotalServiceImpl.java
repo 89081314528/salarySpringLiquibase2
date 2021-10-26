@@ -55,7 +55,7 @@ public class TotalServiceImpl implements TotalService {
 
         PrintStream csv = new PrintStream(fileName);
         csv.println(
-                "total_id" + "name" + ";" + "salary" + ";" + "kpi" + ";" + "total"
+                "total_id" + ";" + "name" + ";" + "salary" + ";" + "kpi" + ";" + "total"
         );
         for (SalaryAndKPI salaryAndKPI : map.values()) {
             Integer sum = salaryAndKPI.getSalary().getSalary() + salaryAndKPI.getKpi().getKpi();
