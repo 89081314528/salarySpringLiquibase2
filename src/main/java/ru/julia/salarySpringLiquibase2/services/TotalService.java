@@ -9,7 +9,9 @@ import java.util.Map;
 
 public interface TotalService {
     List<Total> findAllTotals();
-    void makeTotalCsvAndFillTable(String fileName) throws FileNotFoundException;
+    List<Total> makeTotals();
+    void makeCsv() throws FileNotFoundException;
+    public void fillTable();
     List<Total> sortTotalAsc();
     Integer getTotalSum();
     List<Map.Entry<String, Integer>> getDepartmentCostsAcs();

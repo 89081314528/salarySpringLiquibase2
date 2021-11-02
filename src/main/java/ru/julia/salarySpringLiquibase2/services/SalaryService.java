@@ -6,8 +6,8 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 public interface SalaryService {
-    public List<Salary> findAllSalaries();
-    public void fillTableSalaryFromCsv(String fileName) throws FileNotFoundException;
-
+    List<Salary> findAllSalaries();
+    void fillTableSalaryFromCsv(String fileName) throws FileNotFoundException;
+    List<Salary> findByName(String name);
 }
 

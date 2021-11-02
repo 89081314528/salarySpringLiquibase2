@@ -29,4 +29,10 @@ public class SalaryController {
     public void fillTableSalaryFromCsv(@PathVariable String fileName) throws FileNotFoundException {
         salaryService.fillTableSalaryFromCsv(fileName);
     }
+
+    @RequestMapping("/findByName/{name}")
+    public void findByName(@PathVariable String name) throws FileNotFoundException {
+        salaryService.findByName(name);
+    }
 }
+

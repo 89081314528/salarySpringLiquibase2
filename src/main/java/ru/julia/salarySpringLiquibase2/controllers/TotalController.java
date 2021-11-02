@@ -26,6 +26,7 @@ import java.util.Map;
  * добавить должности. добавить штатное расписание. метод, который принимает нового сотрудника и добавляет его
  * в отдел, если его можно добавить. если нельзя добавить, вывести сообщение, что нельзя
  * +в total добавить колонку salary id, чтобы связать все таблицы, сделать чтобы данные по зп и кпи были за несколько месяцев
+ * потренироваться создавать в репозитории методы и посмотреть какие запросы они формируют
  */
 @RestController
 @RequiredArgsConstructor
@@ -36,10 +37,17 @@ public class TotalController {
     public List<Total> findAllTotals() {
         return totalService.findAllTotals();
     }
-
-    @RequestMapping("/makeTotalCsvAndFillTable/{fileName}")
-    public void makeTotalCsvAndFillTable(@PathVariable String fileName) throws FileNotFoundException {
-        totalService.makeTotalCsvAndFillTable(fileName);
+    @RequestMapping("/makeTotals")
+    public List<Total> makeTotals() {
+        return totalService.makeTotals();
+    }
+    @RequestMapping("/makeCsv")
+    public void makeCsv() throws FileNotFoundException {
+        totalService.makeCsv();
+    }
+    @RequestMapping("/fillTable")
+    public void fillTable() {
+        totalService.fillTable();
     }
     @RequestMapping("/sortTotalsAsc")
     public List<Total> sortTotalsAsc() {

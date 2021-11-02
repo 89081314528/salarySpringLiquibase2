@@ -30,11 +30,11 @@ public class TotalServiceImpl implements TotalService {
         return totalRepository.findAll();
     }
 
+    // раздела ранее написанный метод на 3 метода - строит тоталы, принимает тоталы входным параметром и записывает
+    // из них сиэсви, вызывает 2 предыдущих метода и заполняет базу данных
     @Override
-    public void makeTotalCsvAndFillTable(String fileName) throws FileNotFoundException { //
-        // разделить на 3 метода - строит тоталы, принимает тоталы входным параметром и записывает из них сиэсви,
-        // вызывает 2 предыдущих метода и заполняет базу данных
-        List<Salary> salaries = salaryRepository.findAll();
+    public List<Total> makeTotals() { //??? нормально что тут мапа или надо новую сущность сделать?
+        List<Salary> salaries = salaryRepository.findAll();//??? норм, что в total нет месяца, он есть в salary
         List<Kpi> kpis = kpiRepository.findAll();
         List<Total> totals = new ArrayList<>();
         Map<Integer, SalaryAndKPI> map = new HashMap<>();
@@ -47,27 +47,34 @@ public class TotalServiceImpl implements TotalService {
 
         for (int i = 0; i < kpis.size(); i++) {
             Kpi kpi = kpis.get(i);
-            Integer kpiId = kpi.getKpiId();
-            Salary salary = map.get(kpiId).getSalary();
+            Integer salaryId = kpi.getSalaryId();
+            Salary salary = map.get(salaryId).getSalary();
             SalaryAndKPI salaryAndKPI = new SalaryAndKPI(salary, kpi);
-            map.put(kpiId, salaryAndKPI);
+            map.put(salaryId, salaryAndKPI);
         }
 
-        PrintStream csv = new PrintStream(fileName);
-        csv.println(
-                "total_id" + ";" + "salary_id" + ";" + "name" + ";" + "salary" + ";" + "kpi" + ";" + "total"
-        );
         for (SalaryAndKPI salaryAndKPI : map.values()) {
             Integer sum = salaryAndKPI.getSalary().getSalary() + salaryAndKPI.getKpi().getKpi();
             Total total = new Total(
                     salaryAndKPI.getSalary().getSalaryId(), //айди total такой же как айди salary.??? как сделать
-                    salaryAndKPI.getSalary().getSalaryId(), // произвольный
+                    salaryAndKPI.getSalary().getSalaryId(), // произвольный. можно сделать total без total_id
                     salaryAndKPI.getSalary().getName(),
                     salaryAndKPI.getSalary().getSalary(),
                     salaryAndKPI.getKpi().getKpi(),
                     sum);
             totals.add(total);
+        }
+        return totals;
+    }
 
+    @Override
+    public void makeCsv() throws FileNotFoundException {//??? как передать параметром List<Total>
+        List<Total> totals = makeTotals();
+        PrintStream csv = new PrintStream("total.csv");
+        csv.println(
+                "total_id" + ";" + "salary_id" + ";" + "name" + ";" + "salary" + ";" + "kpi" + ";" + "total"
+        );
+        for (Total total : totals) {
             csv.println(
                     total.getTotalId() + ";" +
                             total.getSalaryId() + ";" +
@@ -77,6 +84,11 @@ public class TotalServiceImpl implements TotalService {
                             total.getTotal()
             );
         }
+    }
+
+    @Override
+    public void fillTable() {
+        List<Total> totals = makeTotals();
         totalRepository.saveAll(totals);
     }
 

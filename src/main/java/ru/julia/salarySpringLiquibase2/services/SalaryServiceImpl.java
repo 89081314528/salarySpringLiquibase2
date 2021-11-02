@@ -36,4 +36,9 @@ public class SalaryServiceImpl implements SalaryService{
         }
                 salaryRepository.saveAll(result);
         }
+
+    @Override
+    public List<Salary> findByName(String name) {
+        return salaryRepository.findByName(name);
+    }
 }
