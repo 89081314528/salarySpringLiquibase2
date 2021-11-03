@@ -1,13 +1,9 @@
 package ru.julia.salarySpringLiquibase2.entities;
-
-import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.UUID;
 
 @Entity
 @Table(name = "salaries3")

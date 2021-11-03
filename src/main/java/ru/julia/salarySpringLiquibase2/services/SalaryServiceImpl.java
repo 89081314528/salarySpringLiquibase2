@@ -41,4 +41,5 @@ public class SalaryServiceImpl implements SalaryService{
     public List<Salary> findByName(String name) {
         return salaryRepository.findByName(name);
     }
+
 }
