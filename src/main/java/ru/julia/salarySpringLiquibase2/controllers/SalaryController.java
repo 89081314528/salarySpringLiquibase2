@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.julia.salarySpringLiquibase2.dto.NameAndSalary;
 import ru.julia.salarySpringLiquibase2.entities.Salary;
 import ru.julia.salarySpringLiquibase2.repositories.SalaryRepository;
 import ru.julia.salarySpringLiquibase2.services.SalaryService;
@@ -57,5 +58,34 @@ public class SalaryController {
         return salaryRepository.getByDepartmentIdOrSalary(departmentId, salary);
     }
 
+    @RequestMapping("/getNameAndSalaryByDepartmentId/{departmentId}")
+    public List<NameAndSalary> getNameAndSalaryByDepartmentId(@PathVariable Integer departmentId){
+        return salaryRepository.getNameAndSalaryByDepartmentId(departmentId);
+    }
+
+    @RequestMapping("/findByNameLike/{name}")
+    public List<Salary> findByNameLike(@PathVariable String name){
+        return salaryRepository.findByNameLike(name = "%" + name + "%");
+    }
+
+    @RequestMapping("/findByNameStartingWith/{name}")
+    public List<Salary> findByNameStartingWith(@PathVariable String name){
+        return salaryRepository.findByNameStartingWith(name);
+    }
+
+    @RequestMapping("/findByNameContaining/{name}")
+    public List<Salary> findByNameContaining(@PathVariable String name){
+        return salaryRepository.findByNameContaining(name);
+    }
+
+    @RequestMapping("/findByDepartmentIdOrderByNameDesc/{departmentId}")
+    public List<Salary> findByDepartmentIdOrderByNameDesc(@PathVariable Integer departmentId){
+        return salaryRepository.findByDepartmentIdOrderByNameDesc(departmentId);
+    }
+
+    @RequestMapping("/findByNameIgnoreCase/{name}")
+    public List<Salary> findByNameIgnoreCase(@PathVariable String name){
+        return salaryRepository.findByNameIgnoreCase(name);
+    }
 }
 
