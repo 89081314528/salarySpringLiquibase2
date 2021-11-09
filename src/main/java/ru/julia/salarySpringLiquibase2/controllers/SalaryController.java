@@ -1,6 +1,7 @@
 package ru.julia.salarySpringLiquibase2.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +38,7 @@ public class SalaryController {
     public List<Salary> findByName(@PathVariable String name){
         return salaryService.findByName(name);
     }
+
     @RequestMapping("/getByDepartmentId/{departmentId}")
     public List<Salary> getByDepartmentId(@PathVariable Integer departmentId){
         return salaryRepository.getByDepartmentId(departmentId);
@@ -87,5 +89,36 @@ public class SalaryController {
     public List<Salary> findByNameIgnoreCase(@PathVariable String name){
         return salaryRepository.findByNameIgnoreCase(name);
     }
-}
 
+    @RequestMapping("/count")
+    public long count(){
+        return salaryRepository.count();
+    }
+
+    @RequestMapping("/deleteByName/{name}")
+    public long deleteByName(@PathVariable String name){
+        return salaryRepository.deleteByName(name);
+    }
+
+    @RequestMapping("/removeByName/{name}")
+    public List<Salary> removeByName(@PathVariable String name){
+        return salaryRepository.removeByName(name);
+    }
+
+    @RequestMapping("/findByName2/{name}")
+    public List<Salary> findByName2(@PathVariable String name){
+        return salaryRepository.findByName2(name);
+    }
+
+    @RequestMapping("/getByDepartmentIdGreaterThanEqualAndSalaryGreaterThanEqual2/{departmentId}/{salary}")
+    public List <Salary> getByDepartmentIdGreaterThanEqualAndSalaryGreaterThanEqual2(@PathVariable Integer departmentId,
+                                                                                   @PathVariable Integer salary) {
+        return salaryRepository.getByDepartmentIdGreaterThanEqualAndSalaryGreaterThanEqual2(departmentId, salary);
+    }
+
+    @RequestMapping("/removeByName2/{name}")
+    void removeByName2(@PathVariable String name){
+        salaryRepository.removeByName2(name);
+    }
+
+}

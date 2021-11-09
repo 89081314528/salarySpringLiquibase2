@@ -1,6 +1,10 @@
 package ru.julia.salarySpringLiquibase2.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.julia.salarySpringLiquibase2.dto.NameAndSalary;
 import ru.julia.salarySpringLiquibase2.entities.Salary;
 
@@ -12,12 +16,14 @@ public interface SalaryRepository extends JpaRepository<Salary, Integer> {
     Optional<Salary> findById(Integer integer);
 
     List<Salary> findByName(String name); // find и get одно и то же
-//    select * from salaries3 where name = ?;
+
+    //    select * from salaries3 where name = ?;
     List<Salary> getByDepartmentId(Integer departmentId); // select * from salaries3 where departmentId = ?;
 
     List<Salary> getByDepartmentIdAndSalary(Integer departmentId, Integer salary); // select * from salaries3 where departmentId = ? and salary = ?;
 
     List<Salary> getByDepartmentIdGreaterThanEqualAndSalaryGreaterThanEqual(Integer departmentId, Integer salary); // select * from salaries3
+
     // where departmentId >= ? and salary >= ?;
     List<Salary> getByDepartmentIdOrSalary(Integer departmentId, Integer salary); // select * from salaries3 where departmentId = ? or salary = ?;
 
@@ -37,4 +43,27 @@ public interface SalaryRepository extends JpaRepository<Salary, Integer> {
     List<Salary> findByDepartmentIdOrderByNameDesc(Integer departmentId); //select * from salaries3 where departmentId = ? order by name desc;
 
     List<Salary> findByNameIgnoreCase(String name);//select * from salaries3 where upper(name) = upper(?);
+
+    long count();
+
+    @Transactional
+    long deleteByName(String name);
+
+    @Transactional
+    List<Salary> removeByName(String name);
+
+    @Query("select u from Salary u where u.name = ?1")
+    List<Salary> findByName2(String name);
+
+    @Query("select u from Salary u where u.departmentId >= ?1 and u.salary >=?2")
+    List<Salary> getByDepartmentIdGreaterThanEqualAndSalaryGreaterThanEqual2(Integer departmentId, Integer salary);
+
+    @Transactional
+    @Modifying
+    @Query("delete from Salary u where u.name = ?1")
+    void removeByName2(String name);
+//    org.hibernate.hql.internal.QueryExecutionRequestException: Not supported for DML operations
+//    [delete from ru.julia.salarySpringLiquibase2.entities.Salary u where u.name = ?1]
+
+
 }
