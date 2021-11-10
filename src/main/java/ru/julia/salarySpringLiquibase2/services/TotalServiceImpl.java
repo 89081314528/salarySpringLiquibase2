@@ -2,9 +2,8 @@ package ru.julia.salarySpringLiquibase2.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.julia.salarySpringLiquibase2.dto.MapValueComparator;
-import ru.julia.salarySpringLiquibase2.dto.SalaryAndKPI;
-import ru.julia.salarySpringLiquibase2.dto.TotalComparator;
+import ru.julia.salarySpringLiquibase2.dto.*;
+import ru.julia.salarySpringLiquibase2.entities.Department;
 import ru.julia.salarySpringLiquibase2.entities.Kpi;
 import ru.julia.salarySpringLiquibase2.entities.Salary;
 import ru.julia.salarySpringLiquibase2.entities.Total;
@@ -93,11 +92,41 @@ public class TotalServiceImpl implements TotalService {
     }
 
     @Override
-    public List<Total> sortTotalAsc() {
+    public List<Total> sortTotalsByTotalAsc() {
         List<Total> totals = totalRepository.findAll();
         Comparator totalComparator = new TotalComparator();
         Collections.sort(totals, totalComparator);
         return totals;
+    }
+
+    @Override
+    public List<TotalWithDepartment> sortTotalByDepartmentAndTotal() {
+        List<Total> totalsSortedByTotal = sortTotalsByTotalAsc();
+        List<TotalWithDepartment> totalsWithDepartmentSortedByTotal = new ArrayList<>();
+        for (Total total : totalsSortedByTotal) {
+            Integer salaryId = total.getSalaryId();
+            Integer departmentId = salaryRepository.findById(salaryId).orElseThrow().getDepartmentId();
+            totalsWithDepartmentSortedByTotal.add(new TotalWithDepartment(total.getTotalId(), salaryId,
+                    total.getName(), total.getSalary(), total.getKpi(), total.getTotal(),
+                    departmentId));
+        }
+
+        List <Integer> departmentIdAsc = new ArrayList<>();
+        List<Department> departments = departmentRepository.findAll();
+        for (Department department : departments) {
+            departmentIdAsc.add(department.getId());
+        }
+        Collections.sort(departmentIdAsc);
+
+        List<TotalWithDepartment> totalsWithDepartmentSortedByTotalAndDepartment = new ArrayList<>();
+        for (Integer integer : departmentIdAsc) {
+            for (TotalWithDepartment totalWithDepartment : totalsWithDepartmentSortedByTotal) {
+                if (integer.equals(totalWithDepartment.getDepartmentId())) {
+                    totalsWithDepartmentSortedByTotalAndDepartment.add(totalWithDepartment);
+                }
+            }
+        }
+        return totalsWithDepartmentSortedByTotalAndDepartment;
     }
 
     @Override
@@ -136,36 +165,28 @@ public class TotalServiceImpl implements TotalService {
     }
 
     @Override
-    public Map<String, Integer> getDepartmentWithMaxCosts() {
+    public Map.Entry<String, Integer> getDepartmentWithMaxCosts() {
         List<Map.Entry<String, Integer>> list = getDepartmentCostsAcs();
-        Map<String, Integer> mapMax = new TreeMap<>(); // вместо мапы создать новый класс с нужными полями
-        // в предыдущем методе тоже переделать
-        // могу взять первый и последний элемент отсортированного листа, чтобы получить мин и мах
-        Integer max = 0;
-        String keyMax = "";
-        for (Map.Entry<String, Integer> entry : list) {
-            if (entry.getValue() > max) {
-                max = entry.getValue();
-                keyMax = entry.getKey();
-            }
-        }
-        mapMax.put(keyMax, max);
-        return mapMax;
+        return list.get(list.size() - 1);
     }
 
     @Override
-    public Map<String, Integer> getDepartmentWithMinCosts() {
+    public Map.Entry<String, Integer> getDepartmentWithMinCosts() {
         List<Map.Entry<String, Integer>> list = getDepartmentCostsAcs();
-        Map<String, Integer> mapMin = new TreeMap<>();
-        Integer min = list.get(0).getValue();
-        String keyMin = list.get(0).getKey();
-        for (Map.Entry<String, Integer> entry : list) {
-            if (entry.getValue() < min) {
-                min = entry.getValue();
-                keyMin = entry.getKey();
+        return list.get(0);
+    }
+
+    @Override
+    public List<Salary> depSalarySortedBySalary(Integer departmentId) {
+        List <Salary> salaries = salaryRepository.findAll();
+        List <Salary> depSalary = new ArrayList<>();
+        for (Salary salary : salaries) {
+            if (salary.getDepartmentId().equals(departmentId)) {
+                depSalary.add(salary);
             }
         }
-        mapMin.put(keyMin, min);
-        return mapMin;
+        Comparator<Salary> salaryNameComparator = new SalaryNameComporator();
+        depSalary.sort(salaryNameComparator);
+        return depSalary;
     }
 }

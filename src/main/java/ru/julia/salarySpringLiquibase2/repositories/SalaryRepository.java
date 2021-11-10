@@ -58,12 +58,9 @@ public interface SalaryRepository extends JpaRepository<Salary, Integer> {
     @Query("select u from Salary u where u.departmentId >= ?1 and u.salary >=?2")
     List<Salary> getByDepartmentIdGreaterThanEqualAndSalaryGreaterThanEqual2(Integer departmentId, Integer salary);
 
-    @Transactional
+    @Transactional // надо две аннотации чтобы работало
     @Modifying
     @Query("delete from Salary u where u.name = ?1")
     void removeByName2(String name);
-//    org.hibernate.hql.internal.QueryExecutionRequestException: Not supported for DML operations
-//    [delete from ru.julia.salarySpringLiquibase2.entities.Salary u where u.name = ?1]
-
 
 }

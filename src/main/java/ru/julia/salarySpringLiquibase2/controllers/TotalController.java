@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.julia.salarySpringLiquibase2.dto.TotalWithDepartment;
+import ru.julia.salarySpringLiquibase2.entities.Salary;
 import ru.julia.salarySpringLiquibase2.entities.Total;
 import ru.julia.salarySpringLiquibase2.services.TotalService;
 
@@ -13,20 +15,20 @@ import java.util.Map;
 
 /**
  * +Данные двух таблиц из csv файлов выгрузить в БД, объединить в третью таблицу Total, создать csv и заполнить БД
- * +отсортировать total по возрастанию зарплаты
- * +посчитать сумму
+ * +отсортировать total по возрастанию зарплаты - sortTotalsByTotalAsc
+ * +посчитать сумму - getTotalSum
  * надо научиться делать как в реальности!!!!!!!!!!!!!!!!!!
  * +добавить отделы и ай ди отдела в класс сэлэри
  * * ??? как использовать внешние ключи
- * +показать общие затраты всех отделов по возрастанию затрат
- * +найти отделы, у которых наибольшие и наименьшие расходы на зарплату в месяц
- * отсортировать total сначала по отделу, и внутри отдела по возрастанию зарплаты
- * вывести зарплаты одного отдела по айди отдела, отсортированные по алфавиту и по сумме
- * найти три самых высоких зарплаты в каждом отделе
+ * +показать общие затраты всех отделов по возрастанию затрат - getDepartmentCostsAcs
+ * +найти отделы, у которых наибольшие и наименьшие расходы на зарплату в месяц - getDepartmentWithMaxCosts
+ * +отсортировать total сначала по отделу, и внутри отдела по возрастанию зарплаты - sortTotalByDepartmentAndTotal
+ * +вывести зарплаты одного отдела по айди отдела, отсортированные по сумме - depSalarySortedBySalary
+ * найти три самых высоких зарплаты в отделе по айди отдела
  * добавить должности. добавить штатное расписание. метод, который принимает нового сотрудника и добавляет его
  * в отдел, если его можно добавить. если нельзя добавить, вывести сообщение, что нельзя
  * +в total добавить колонку salary id, чтобы связать все таблицы, сделать чтобы данные по зп и кпи были за несколько месяцев
- * потренироваться создавать в репозитории методы и посмотреть какие запросы они формируют
+ * +потренироваться создавать в salary репозитории методы и посмотреть какие запросы они формируют
  */
 @RestController
 @RequiredArgsConstructor
@@ -49,9 +51,15 @@ public class TotalController {
     public void fillTable() {
         totalService.fillTable();
     }
-    @RequestMapping("/sortTotalsAsc")
-    public List<Total> sortTotalsAsc() {
-        return totalService.sortTotalAsc();
+
+    @RequestMapping("/sortTotalsByTotalAsc")
+    public List<Total> sortTotalsByTotalAsc() {
+        return totalService.sortTotalsByTotalAsc();
+    }
+
+    @RequestMapping("/sortTotalByDepartmentAndTotal")
+    public List<TotalWithDepartment> sortTotalByDepartmentAndTotal() {
+        return totalService.sortTotalByDepartmentAndTotal();
     }
 
     @RequestMapping("/getTotalSum")
@@ -65,12 +73,17 @@ public class TotalController {
     }
 
     @RequestMapping("/getDepartmentWithMaxCosts")
-    public Map<String, Integer> getDepartmentWithMaxCosts() {
+    public Map.Entry<String, Integer> getDepartmentWithMaxCosts() {
         return totalService.getDepartmentWithMaxCosts();
     }
 
     @RequestMapping("/getDepartmentWithMinCosts")
-    public Map<String, Integer> getDepartmentWithMinCosts() {
+    public Map.Entry<String, Integer> getDepartmentWithMinCosts() {
         return totalService.getDepartmentWithMinCosts();
+    }
+
+    @RequestMapping("/depSalarySortedBySalary/{departmentId}")
+    public List<Salary> depSalarySortedBySalary(@PathVariable Integer departmentId) {
+        return totalService.depSalarySortedBySalary(departmentId);
     }
 }
