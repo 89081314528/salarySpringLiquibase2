@@ -111,7 +111,7 @@ public class TotalServiceImpl implements TotalService {
                     departmentId));
         }
 
-        List <Integer> departmentIdAsc = new ArrayList<>();
+        List<Integer> departmentIdAsc = new ArrayList<>();
         List<Department> departments = departmentRepository.findAll();
         for (Department department : departments) {
             departmentIdAsc.add(department.getId());
@@ -140,25 +140,38 @@ public class TotalServiceImpl implements TotalService {
     }
 
     @Override
+    // удобно для каждой таблицы сделать мапу с ключом id и значением - сущностью, например Map<Integer, Salary>
+    // чтобы потом искать данные из разных таблиц, например в total добавить название департамента
     public List<Map.Entry<String, Integer>> getDepartmentCostsAcs() {
         List<Total> totals = totalRepository.findAll();
-        Map<String, Integer> map = new TreeMap<>();
-        // собрать все айди тотала в лист
-        //salaryRepository.findAllById() сюда передаю лист с айди и будут за один раз найдены все салэри с таким айди
-        // собираю все департайди в лист, чтобы получить все департементы из departmentReposotory
-        //сделать еще 2 мапы (ключ тотал айди, департамент) и (ключ департмент айди ди значение департамент)
-        for (Total total : totals) {
-            Integer departmentId = salaryRepository.findById(total.getTotalId()).orElseThrow().getDepartmentId();
-            String key = departmentRepository.findById(departmentId).orElseThrow().getDepartment(); // key название департамента
-            // заменить верхние строки на поиск по мапе
-            Integer value = total.getTotal();
-            if (map.containsKey(key)) {
-                map.put(key, map.get(key) + value);
-            } else {
-                map.put(key, value);
+        Map<String, Integer> depCosts = new TreeMap<>(); // сохраняет порядок вставки
+        List<Salary> salaryList = salaryRepository.findAll(); // пишем так, чтобы обращаться в базу один раз
+        List<Department> departmentList = departmentRepository.findAll(); // а не обращаться в итераторе к БД для каждого тотала
+        Map<Integer, Salary> salaryMap = new HashMap<>();
+        for (Salary salary : salaryList) {
+            salaryMap.put(salary.getSalaryId(), salary);
+        }
+        for (Total total : totals) {              // чтобы убрать лишние сэлэри которых нет в тотале
+            if (!salaryMap.containsKey(total.getSalaryId())) {
+                salaryMap.remove(total.getSalaryId());
             }
         }
-        List<Map.Entry<String, Integer>> list = new ArrayList(map.entrySet());
+        Map<Integer, Department> departmentMap = new HashMap<>();
+        for (Department department : departmentList) {
+            departmentMap.put(department.getId(), department);
+        }
+
+        for (Total total : totals) {
+            Integer departmentId = salaryMap.get(total.getSalaryId()).getDepartmentId();
+            String department = departmentMap.get(departmentId).getDepartment();
+            Integer costs = total.getTotal();
+            if (depCosts.containsKey(department)) {
+                depCosts.put(department, depCosts.get(department) + costs);
+            } else {
+                depCosts.put(department, costs);
+            }
+        }
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(depCosts.entrySet());
         Comparator<Map.Entry<String, Integer>> mapValueComparator = new MapValueComparator();
         list.sort(mapValueComparator);
         return list;
@@ -173,13 +186,13 @@ public class TotalServiceImpl implements TotalService {
     @Override
     public Map.Entry<String, Integer> getDepartmentWithMinCosts() {
         List<Map.Entry<String, Integer>> list = getDepartmentCostsAcs();
-        return list.get(0);
+        return list.iterator().next();//первый элемент
     }
 
     @Override
-    public List<Salary> depSalarySortedBySalary(Integer departmentId) {
-        List <Salary> salaries = salaryRepository.findAll();
-        List <Salary> depSalary = new ArrayList<>();
+    public List<Salary> depSalarySortedAsc(Integer departmentId) {
+        List<Salary> salaries = salaryRepository.findAll();
+        List<Salary> depSalary = new ArrayList<>();
         for (Salary salary : salaries) {
             if (salary.getDepartmentId().equals(departmentId)) {
                 depSalary.add(salary);

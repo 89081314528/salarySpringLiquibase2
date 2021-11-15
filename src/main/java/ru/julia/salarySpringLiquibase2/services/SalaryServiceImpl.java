@@ -13,13 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class SalaryServiceImpl implements SalaryService{
     private final SalaryRepository salaryRepository;
-
-    public SalaryServiceImpl(SalaryRepository salaryRepository) {
-        this.salaryRepository = salaryRepository;
-    }
 
     @Override
     public List<Salary> findAllSalaries() {

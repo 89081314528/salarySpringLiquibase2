@@ -22,13 +22,16 @@ import java.util.Map;
  * * ??? как использовать внешние ключи
  * +показать общие затраты всех отделов по возрастанию затрат - getDepartmentCostsAcs
  * +найти отделы, у которых наибольшие и наименьшие расходы на зарплату в месяц - getDepartmentWithMaxCosts
- * +отсортировать total сначала по отделу, и внутри отдела по возрастанию зарплаты - sortTotalByDepartmentAndTotal
- * +вывести зарплаты одного отдела по айди отдела, отсортированные по сумме - depSalarySortedBySalary
- * найти три самых высоких зарплаты в отделе по айди отдела
+ * +отсортировать total сначала по отделу, и внутри отдела по возрастанию зарплаты - sortTotalByDepartmentAndTotal,
+ * переписать метод так, чтобы не обращаться в цикле к БД, использовать компоратор (сравнивает depId и если не равны то сравнивает total
+ * +вывести зарплаты одного отдела по айди отдела, отсортированные по сумме - depSalarySortedAsc
+ *
  * добавить должности. добавить штатное расписание. метод, который принимает нового сотрудника и добавляет его
  * в отдел, если его можно добавить. если нельзя добавить, вывести сообщение, что нельзя
  * +в total добавить колонку salary id, чтобы связать все таблицы, сделать чтобы данные по зп и кпи были за несколько месяцев
  * +потренироваться создавать в salary репозитории методы и посмотреть какие запросы они формируют
+ * посчитать количество символов в файле
+ * мой эксель файл где я пишу сколько занимаюсь
  */
 @RestController
 @RequiredArgsConstructor
@@ -82,8 +85,8 @@ public class TotalController {
         return totalService.getDepartmentWithMinCosts();
     }
 
-    @RequestMapping("/depSalarySortedBySalary/{departmentId}")
-    public List<Salary> depSalarySortedBySalary(@PathVariable Integer departmentId) {
-        return totalService.depSalarySortedBySalary(departmentId);
+    @RequestMapping("/depSalarySortedAsc/{departmentId}")
+    public List<Salary> depSalarySortedAsc(@PathVariable Integer departmentId) {
+        return totalService.depSalarySortedAsc(departmentId);
     }
 }

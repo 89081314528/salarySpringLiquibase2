@@ -92,4 +92,81 @@
         </insert>
     </changeSet>
 
+    <changeSet  author="Julia"  id="11/11/1">
+        <createTable tableName="staffing_table">
+            <column name="staffing_id" type="integer">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="position" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="plan" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fact" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <insert tableName="staffing_table">
+            <column name="staffing_id">1</column>
+            <column name="position">Системный администратор</column>
+            <column name="plan">2</column>
+            <column name="fact">0</column>
+        </insert>
+        <insert tableName="staffing_table">
+            <column name="staffing_id">2</column>
+            <column name="position">Коммерческий директор</column>
+            <column name="plan">1</column>
+            <column name="fact">0</column>
+        </insert>
+        <insert tableName="staffing_table">
+            <column name="staffing_id">3</column>
+            <column name="position">Менеджер по поддержке партнеров</column>
+            <column name="plan">4</column>
+            <column name="fact">0</column>
+        </insert>
+        <insert tableName="staffing_table">
+            <column name="staffing_id">4</column>
+            <column name="position">Руководитель проекта</column>
+            <column name="plan">4</column>
+            <column name="fact">0</column>
+        </insert>
+        <insert tableName="staffing_table">
+            <column name="staffing_id">5</column>
+            <column name="position">Руководитель отдела It</column>
+            <column name="plan">4</column>
+            <column name="fact">0</column>
+        </insert>
+        <insert tableName="staffing_table">
+            <column name="staffing_id">6</column>
+            <column name="position">Менеджер по продажам</column>
+            <column name="plan">4</column>
+            <column name="fact">0</column>
+        </insert>
+        <insert tableName="staffing_table">
+            <column name="staffing_id">7</column>
+            <column name="position">Риск-менеджер</column>
+            <column name="plan">6</column>
+            <column name="fact">0</column>
+        </insert>
+        <insert tableName="staffing_table">
+            <column name="staffing_id">8</column>
+            <column name="position">Руководитель отдела поддержки партнеров</column>
+            <column name="plan">1</column>
+            <column name="fact">0</column>
+        </insert>
+        <insert tableName="staffing_table">
+            <column name="staffing_id">9</column>
+            <column name="position">Руководитель колл-центра</column>
+            <column name="plan">1</column>
+            <column name="fact">0</column>
+        </insert>
+        <insert tableName="staffing_table">
+            <column name="staffing_id">10</column>
+            <column name="position">Разработчик ПО</column>
+            <column name="plan">1</column>
+            <column name="fact">0</column>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

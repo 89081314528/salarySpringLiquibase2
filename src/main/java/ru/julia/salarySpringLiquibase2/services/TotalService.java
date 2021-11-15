@@ -29,5 +29,5 @@ public interface TotalService {
 
     Map.Entry<String, Integer> getDepartmentWithMinCosts();
 
-    List<Salary> depSalarySortedBySalary(Integer departmentId);
+    List<Salary> depSalarySortedAsc(Integer departmentId);
 }
