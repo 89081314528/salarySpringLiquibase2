@@ -23,7 +23,7 @@ import java.util.Map;
  * +показать общие затраты всех отделов по возрастанию затрат - getDepartmentCostsAcs
  * +найти отделы, у которых наибольшие и наименьшие расходы на зарплату в месяц - getDepartmentWithMaxCosts
  * +отсортировать total сначала по отделу, и внутри отдела по возрастанию зарплаты - sortTotalByDepartmentAndTotal,
- * переписать метод так, чтобы не обращаться в цикле к БД, использовать компоратор (сравнивает depId и если не равны то сравнивает total
+ * +использовать компоратор (сравнивает depId и если не равны то сравнивает total) sortTotalByDepartmentAndTotal2
  * +вывести зарплаты одного отдела по айди отдела, отсортированные по сумме - depSalarySortedAsc
  *
  * добавить должности. добавить штатное расписание. метод, который принимает нового сотрудника и добавляет его
@@ -63,6 +63,11 @@ public class TotalController {
     @RequestMapping("/sortTotalByDepartmentAndTotal")
     public List<TotalWithDepartment> sortTotalByDepartmentAndTotal() {
         return totalService.sortTotalByDepartmentAndTotal();
+    }
+
+    @RequestMapping("/sortTotalByDepartmentAndTotal2")
+    public List<TotalWithDepartment> sortTotalByDepartmentAndTotal2() {
+        return totalService.sortTotalByDepartmentAndTotal2();
     }
 
     @RequestMapping("/getTotalSum")

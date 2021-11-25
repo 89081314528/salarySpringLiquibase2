@@ -21,6 +21,8 @@ public interface TotalService {
 
     List<TotalWithDepartment> sortTotalByDepartmentAndTotal();
 
+    List<TotalWithDepartment> sortTotalByDepartmentAndTotal2();
+
     Integer getTotalSum();
 
     List<Map.Entry<String, Integer>> getDepartmentCostsAcs();

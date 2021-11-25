@@ -9,5 +9,6 @@ public interface SalaryService {
     List<Salary> findAllSalaries();
     void fillTableSalaryFromCsv(String fileName) throws FileNotFoundException;
     List<Salary> findByName(String name);
+    void acceptEmployee(String position);
 }
 

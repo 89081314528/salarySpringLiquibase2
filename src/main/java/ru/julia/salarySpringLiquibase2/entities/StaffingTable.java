@@ -20,6 +20,38 @@ public class StaffingTable {
     @Column(name = "fact")
     private Integer fact;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public Integer getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Integer plan) {
+        this.plan = plan;
+    }
+
+    public Integer getFact() {
+        return fact;
+    }
+
+    public void setFact(Integer fact) {
+        this.fact = fact;
+    }
+
     public StaffingTable(Integer id, String position, Integer plan, Integer fact) {
         this.id = id;
         this.position = position;

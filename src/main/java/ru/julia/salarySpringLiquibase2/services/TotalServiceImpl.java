@@ -67,7 +67,7 @@ public class TotalServiceImpl implements TotalService {
     }
 
     @Override
-    public void makeCsv() throws FileNotFoundException {//??? как передать параметром List<Total>
+    public void makeCsv() throws FileNotFoundException {
         List<Total> totals = makeTotals();
         PrintStream csv = new PrintStream("total.csv");
         csv.println(
@@ -103,9 +103,14 @@ public class TotalServiceImpl implements TotalService {
     public List<TotalWithDepartment> sortTotalByDepartmentAndTotal() {
         List<Total> totalsSortedByTotal = sortTotalsByTotalAsc();
         List<TotalWithDepartment> totalsWithDepartmentSortedByTotal = new ArrayList<>();
+        List<Salary> salaryList = salaryRepository.findAll(); // пишем так, чтобы обращаться в базу один раз
+        Map<Integer, Salary> salaryMap = new HashMap<>();
+        for (Salary salary : salaryList) {
+            salaryMap.put(salary.getSalaryId(), salary);
+        }
         for (Total total : totalsSortedByTotal) {
             Integer salaryId = total.getSalaryId();
-            Integer departmentId = salaryRepository.findById(salaryId).orElseThrow().getDepartmentId();
+            Integer departmentId = salaryMap.get(salaryId).getDepartmentId();
             totalsWithDepartmentSortedByTotal.add(new TotalWithDepartment(total.getTotalId(), salaryId,
                     total.getName(), total.getSalary(), total.getKpi(), total.getTotal(),
                     departmentId));
@@ -127,6 +132,27 @@ public class TotalServiceImpl implements TotalService {
             }
         }
         return totalsWithDepartmentSortedByTotalAndDepartment;
+    }
+
+    @Override // с использованием компоратора
+    public List<TotalWithDepartment> sortTotalByDepartmentAndTotal2() {
+        List<Total> totals = totalRepository.findAll();
+        List<TotalWithDepartment> totalsWithDepartment = new ArrayList<>();
+        List<Salary> salaryList = salaryRepository.findAll(); // пишем так, чтобы обращаться в базу один раз
+        Map<Integer, Salary> salaryMap = new HashMap<>();
+        for (Salary salary : salaryList) {
+            salaryMap.put(salary.getSalaryId(), salary);
+        }
+        for (Total total : totals) {
+            Integer salaryId = total.getSalaryId();
+            Integer departmentId = salaryMap.get(salaryId).getDepartmentId();
+            totalsWithDepartment.add(new TotalWithDepartment(total.getTotalId(), salaryId,
+                    total.getName(), total.getSalary(), total.getKpi(), total.getTotal(),
+                    departmentId));
+        }
+        Comparator totalWithDepartmentComparator = new TotalWithDepartmentComparator();
+        Collections.sort(totalsWithDepartment, totalWithDepartmentComparator);
+        return totalsWithDepartment;
     }
 
     @Override
